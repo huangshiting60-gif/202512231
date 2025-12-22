@@ -304,16 +304,16 @@ let questions = [
   { level: 2, q: "教學設計中，回饋與修正是重要的一環。", op1: "O", op2: "X", a: '1', explanation: "教學不是做完就算了，透過回饋修正才能越來越有效。", hint: "教學不是做完就算了，透過回饋修正才能越來越有效。" },
   { level: 2, q: "教育科技的成果只需要老師滿意即可。", op1: "O", op2: "X", a: '2', explanation: "重點是學習者是否真的學會、願意用、能達成目標，不只看老師感覺。", hint: "重點是學習者是否真的學會、願意用、能達成目標，不只看老師感覺。" },
   // Level 3
-  { level: 3, q: "同一套數位教材，對所有學生的學習效果都會一樣。", op1: "O", op2: "X", a: '2', hint: "每個人的學習需求不同。" },
-  { level: 3, q: "教學設計時，先訂學習目標再選科技工具是較合理的流程。", op1: "O", op2: "X", a: '1', hint: "目標導向設計。" },
-  { level: 3, q: "如果學生覺得有趣，代表一定學得好。", op1: "O", op2: "X", a: '2', hint: "有趣不等於有效學習。" },
-  { level: 3, q: "教育科技的評估標準之一是是否真的改變學習行為。", op1: "O", op2: "X", a: '1', hint: "行為改變是重要指標。" },
-  { level: 3, q: "科技使用越多，學生學習成效一定越高。", op1: "O", op2: "X", a: '2', hint: "適當使用才是關鍵。" },
-  { level: 3, q: "教科系作品需要能說明設計背後的教育理念。", op1: "O", op2: "X", a: '1', hint: "理念支撐設計。" },
-  { level: 3, q: "學習者的錯誤與失敗，在教育科技中是沒有價值的。", op1: "O", op2: "X", a: '2', hint: "錯誤也是學習的一部分。" },
-  { level: 3, q: "好的教育科技設計需要不斷測試與修正。", op1: "O", op2: "X", a: '1', hint: "迭代設計很重要。" },
-  { level: 3, q: "教育科技只要能用，就不需要評估成效。", op1: "O", op2: "X", a: '2', hint: "評估才能確保品質。" },
-  { level: 3, q: "教育科技的成功與否，與學習者參與程度有關。", op1: "O", op2: "X", a: '1', hint: "主動參與學習效果更好。" }
+  { level: 3, q: "AI 人工智慧可以完全取代老師的角色。", op1: "O", op2: "X", a: '2', explanation: "AI 是輔助工具，老師的情感支持與引導仍無法被取代。", hint: "AI 只是工具。" },
+  { level: 3, q: "適性化學習系統(Adaptive Learning)能根據學生表現調整內容。", op1: "O", op2: "X", a: '1', explanation: "這正是適性化學習的核心功能，提供個人化路徑。", hint: "因材施教的科技版。" },
+  { level: 3, q: "虛擬實境(VR)只能用來玩遊戲，無法應用於教育。", op1: "O", op2: "X", a: '2', explanation: "VR 可用於模擬手術、導覽古蹟等沉浸式學習。", hint: "沉浸式學習。" },
+  { level: 3, q: "在教育科技中，數據隱私(Data Privacy)是重要的倫理議題。", op1: "O", op2: "X", a: '1', explanation: "保護學生個資與學習數據是發展科技的前提。", hint: "個資很重要。" },
+  { level: 3, q: "遊戲化教學(Gamification)就是讓學生在課堂上一直玩電動。", op1: "O", op2: "X", a: '2', explanation: "遊戲化是指應用遊戲機制(如積分、徽章)來促進學習動機，而非單純玩樂。", hint: "重點是機制而非玩樂。" },
+  { level: 3, q: "混成教學(Blended Learning)結合了線上與面對面教學的優點。", op1: "O", op2: "X", a: '1', explanation: "混成教學透過虛實整合，提升學習彈性與成效。", hint: "線上加線下。" },
+  { level: 3, q: "數位落差(Digital Divide)是指不同族群間接觸科技機會的差異。", op1: "O", op2: "X", a: '1', explanation: "這是教育公平性的重要議題，需關注設備與網路的普及。", hint: "資源分配不均。" },
+  { level: 3, q: "開放教育資源(OER)通常是免費且允許改作分享的。", op1: "O", op2: "X", a: '1', explanation: "OER 鼓勵知識共享，通常採用創用CC授權。", hint: "知識共享。" },
+  { level: 3, q: "學習分析(Learning Analytics)可以幫助老師預測學生的學習風險。", op1: "O", op2: "X", a: '1', explanation: "透過數據分析，老師能提早發現需要協助的學生。", hint: "數據輔助決策。" },
+  { level: 3, q: "引入新科技時，應以「科技」為主角，課程配合科技修改。", op1: "O", op2: "X", a: '2', explanation: "應以「教學目標」為核心，科技只是達成目標的手段。", hint: "目標優於工具。" }
 ];
 let currentQuestion = null; // 目前的題目物件
 let quizSolved = false; // 是否已解決當前關卡的題目
@@ -1989,8 +1989,12 @@ function drawPlaying() {
       textAlign(CENTER, TOP);
       
       // 提示文字打字機效果
-      if (typeWriterHintTarget !== currentQuestion.hint) {
-          typeWriterHintTarget = currentQuestion.hint;
+      let processedHint = currentQuestion.hint;
+      // [修改] 每10個字換行
+      processedHint = processedHint.replace(/(.{10})(?!$)/gm, '$1\n');
+
+      if (typeWriterHintTarget !== processedHint) {
+          typeWriterHintTarget = processedHint;
           typeWriterHintIndex = 0;
       }
       if (hintBoxScale > 0.8 && typeWriterHintIndex < typeWriterHintTarget.length) {
